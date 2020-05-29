@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="me.k28611.pintuan.dao.ActivityMasterMapper">
+  <resultMap id="BaseResultMap" type="me.k28611.pintuan.model.po.ActivityMaster">
+    <id column="activityNo" jdbcType="INTEGER" property="activityno" />
+    <result column="activityStartTime" jdbcType="VARCHAR" property="activitystarttime" />
+    <result column="groupNo" jdbcType="INTEGER" property="groupno" />
+    <result column="sumAccount" jdbcType="DECIMAL" property="sumaccount" />
+    <result column="activityEndTime" jdbcType="VARCHAR" property="activityendtime" />
+    <result column="activityName" jdbcType="VARCHAR" property="activityname" />
+
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from Activity_Master
+    where activityNo = #{activityno,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="me.k28611.pintuan.model.po.ActivityMaster">
+    insert into Activity_Master (activityNo, activityStartTime, groupNo, 
+      sumAccount, activityEndTime, activityName)
+    values (#{activityno,jdbcType=INTEGER}, #{activitystarttime,jdbcType=VARCHAR}, #{groupno,jdbcType=INTEGER}, 
+      #{sumaccount,jdbcType=DECIMAL}, #{activityendtime,jdbcType=VARCHAR}, #{activityname,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="me.k28611.pintuan.model.po.ActivityMaster">
+    update Activity_Master
+    set activityStartTime = #{activitystarttime,jdbcType=VARCHAR},
+      groupNo = #{groupno,jdbcType=INTEGER},
+      sumAccount = #{sumaccount,jdbcType=DECIMAL},
+      activityEndTime = #{activityendtime,jdbcType=VARCHAR},
+      activityName = #{activityname,jdbcType=VARCHAR}
+    where activityNo = #{activityno,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select activityNo, activityStartTime, groupNo, sumAccount, activityEndTime, activityName
+    from Activity_Master
+    where activityNo = #{activityno,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select activityNo, activityStartTime, groupNo, sumAccount, activityEndTime, activityName
+    from Activity_Master
+  </select>
+</mapper>

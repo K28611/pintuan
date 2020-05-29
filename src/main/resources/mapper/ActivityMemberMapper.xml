@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="me.k28611.pintuan.dao.ActivityMemberMapper">
+  <resultMap id="BaseResultMap" type="me.k28611.pintuan.model.po.ActivityMember">
+    <id column="pno" jdbcType="INTEGER" property="pno" />
+    <result column="activirtyMemberNo" jdbcType="INTEGER" property="activirtymemberno" />
+    <result column="oughtMoney" jdbcType="DECIMAL" property="oughtmoney" />
+    <result column="oughtMoneyStatus" jdbcType="BIT" property="oughtmoneystatus" />
+    <result column="activityTopic" jdbcType="VARCHAR" property="activitytopic" />
+    <result column="activityNo" jdbcType="INTEGER" property="activityno" />
+    <result column="addFare" jdbcType="DECIMAL" property="addfare" />
+    <result column="addFareStatus" jdbcType="BIT" property="addfarestatus" />
+    <result column="addFareTopic" jdbcType="VARCHAR" property="addfaretopic" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from Activity_Member
+    where pno = #{pno,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="me.k28611.pintuan.model.po.ActivityMember">
+    insert into Activity_Member (pno, activirtyMemberNo, oughtMoney, 
+      oughtMoneyStatus, activityTopic, activityNo, addFare, addFareStatus ,addFareTopic
+      )
+    values (#{pno,jdbcType=INTEGER}, #{activirtymemberno,jdbcType=INTEGER}, #{oughtmoney,jdbcType=DECIMAL}, 
+      #{oughtmoneystatus,jdbcType=BIT}, #{activitytopic,jdbcType=VARCHAR}, #{addfare,jdbcType=DECIMAL},
+      #{addfarestatus,jdbcType=BIT}, #{addfaretopic,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="me.k28611.pintuan.model.po.ActivityMember">
+    update Activity_Member
+    set activirtyMemberNo = #{activirtymemberno,jdbcType=INTEGER},
+      oughtMoney = #{oughtmoney,jdbcType=DECIMAL},
+      oughtMoneyStatus = #{oughtmoneystatus,jdbcType=BIT},
+      activityTopic = #{activitytopic,jdbcType=VARCHAR},
+      activityNo = #{activityno,jdbcType=INTEGER}
+      addFare = #{addfare,jdbcType=DECIMAL},
+      addFareStatus = #{addfarestatus,jdbcType=BIT},
+      addFareTopic = #{addfaretopic,jdbcType=VARCHAR}
+    where pno = #{pno,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select pno, activirtyMemberNo, oughtMoney, oughtMoneyStatus, activityTopic, activityNo,
+    addFare , addFareStatus ,addFareTopic
+    from Activity_Member
+    where pno = #{pno,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select pno, activirtyMemberNo, oughtMoney, oughtMoneyStatus, activityTopic, activityNo,
+    addFare , addFareStatus ,addFareTopic
+    from Activity_Member
+  </select>
+  <select id="selectByActivityNo" resultMap="BaseResultMap">
+    select pno, activirtyMemberNo, oughtMoney, oughtMoneyStatus, activityTopic, activityNo,
+    addFare , addFareStatus ,addFareTopic
+    from Activity_Member
+    where activityNo = #{activityno,jdbcType=INTEGER}
+  </select>
+  <select id="selectByMemberNo" resultMap="BaseResultMap">
+    select pno, activirtyMemberNo, oughtMoney, oughtMoneyStatus, activityTopic, activityNo,
+    addFare , addFareStatus ,addFareTopic
+    from Activity_Member
+    where activirtyMemberNo = #{memberno,jdbcType=INTEGER}
+  </select>
+
+</mapper>

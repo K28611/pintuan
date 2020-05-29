@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="me.k28611.pintuan.dao.HrMemberMapper">
+  <resultMap id="BaseResultMap" type="me.k28611.pintuan.model.po.HrMember">
+    <id column="workNo" jdbcType="INTEGER" property="workno" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="authority" jdbcType="VARCHAR" property="authority" />
+    <result column="note" jdbcType="VARCHAR" property="note" />
+    <result column="isvalid" jdbcType="BIT" property="isvalid" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="accountno" jdbcType="INTEGER" property="accountno" />
+    <result column="headimgurl" jdbcType="VARCHAR" property="headimgurl" />
+    <result column="perAccount" jdbcType="DECIMAL" property="peraccount" />
+  </resultMap>
+  <resultMap id="GroupResultMap" type="me.k28611.pintuan.model.vo.User">
+    <id column="workNo" jdbcType="INTEGER" property="workno" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from HR_Member
+    where workNo = #{workno,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="me.k28611.pintuan.model.po.HrMember">
+    insert into HR_Member (workNo, username, `password`, 
+      authority, note, isvalid, 
+      email, accountno, headimgurl, 
+      perAccount)
+    values (#{workno,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{authority,jdbcType=VARCHAR}, #{note,jdbcType=VARCHAR}, #{isvalid,jdbcType=BIT}, 
+      #{email,jdbcType=VARCHAR}, #{accountno,jdbcType=INTEGER}, #{headimgurl,jdbcType=VARCHAR}, 
+      #{peraccount,jdbcType=DECIMAL})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="me.k28611.pintuan.model.po.HrMember">
+    update HR_Member
+    set username = #{username,jdbcType=VARCHAR},
+      `password` = #{password,jdbcType=VARCHAR},
+      authority = #{authority,jdbcType=VARCHAR},
+      note = #{note,jdbcType=VARCHAR},
+      isvalid = #{isvalid,jdbcType=BIT},
+      email = #{email,jdbcType=VARCHAR},
+      accountno = #{accountno,jdbcType=INTEGER},
+      headimgurl = #{headimgurl,jdbcType=VARCHAR},
+      perAccount = #{peraccount,jdbcType=DECIMAL}
+    where workNo = #{workno,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select workNo, username, `password`, authority, note, isvalid, email, accountno, 
+    headimgurl, perAccount
+    from HR_Member
+    where workNo = #{workno,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select workNo, username, `password`, authority, note, isvalid, email, accountno, 
+    headimgurl, perAccount
+    from HR_Member
+  </select>
+  <select id="getMembersByGroup" resultMap="GroupResultMap">
+    select A.workNo, A.username
+    from HR_Member A
+    left join Group_Member B on A.workNo = B.groupMember
+    where B.groupNo =#{groupNo,jdbcType=INTEGER}
+  </select>
+  <select id="selectByUserName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select workNo, username, `password`, authority, note, isvalid, email, accountno,
+    headimgurl, perAccount
+    from HR_Member
+    where username = #{username,jdbcType=VARCHAR}
+  </select>
+
+</mapper>

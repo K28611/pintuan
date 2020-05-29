@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="me.k28611.pintuan.dao.GroupMasterMapper">
+  <resultMap id="BaseResultMap" type="me.k28611.pintuan.model.po.GroupMaster">
+    <id column="groupNo" jdbcType="INTEGER" property="groupno" />
+    <result column="groupName" jdbcType="VARCHAR" property="groupname" />
+    <result column="groupMaster" jdbcType="INTEGER" property="groupmaster" />
+    <result column="groupFoundTime" jdbcType="VARCHAR" property="groupfoundtime" />
+  </resultMap>
+  <resultMap id="BaseResultMap2" type="me.k28611.pintuan.model.vo.GroupInfo">
+    <id column="groupNo" jdbcType="INTEGER" property="groupno" />
+    <result column="groupName" jdbcType="VARCHAR" property="groupname" />
+    <result column="groupMaster" jdbcType="INTEGER" property="groupmaster" />
+    <result column="groupFoundTime" jdbcType="VARCHAR" property="groupfoundtime" />
+    <result column="groupMasterName" jdbcType="VARCHAR" property="groupmastername" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from Group_Master
+    where groupNo = #{groupno,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="me.k28611.pintuan.model.po.GroupMaster">
+    insert into Group_Master (groupNo, groupName, groupMaster, 
+      groupFoundTime)
+    values (#{groupno,jdbcType=INTEGER}, #{groupname,jdbcType=VARCHAR}, #{groupmaster,jdbcType=INTEGER}, 
+      #{groupfoundtime,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="me.k28611.pintuan.model.po.GroupMaster">
+    update Group_Master
+    set groupName = #{groupname,jdbcType=VARCHAR},
+      groupMaster = #{groupmaster,jdbcType=INTEGER},
+      groupFoundTime = #{groupfoundtime,jdbcType=VARCHAR}
+    where groupNo = #{groupno,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select groupNo, groupName, groupMaster, groupFoundTime
+    from Group_Master
+    where groupNo = #{groupno,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select groupNo, groupName, groupMaster, groupFoundTime
+    from Group_Master
+  </select>
+  <select id="getGroupInfo" resultMap="BaseResultMap2">
+    select A.groupNo, A.groupName, A.groupMaster, A.groupFoundTime,B.username as groupMasterName
+    from Group_Master A
+    left join HR_Member B on A.groupMaster = B.workNo
+    where groupNo = #{groupno,jdbcType=INTEGER}
+  </select>
+</mapper>

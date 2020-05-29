@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="me.k28611.pintuan.dao.GroupFareMapper">
+  <resultMap id="BaseResultMap" type="me.k28611.pintuan.model.po.GroupFare">
+    <id column="fareNo" jdbcType="INTEGER" property="fareno" />
+    <result column="groupNo" jdbcType="INTEGER" property="groupno" />
+    <result column="groupMember" jdbcType="INTEGER" property="groupmember" />
+    <result column="topicID" jdbcType="INTEGER" property="topicid" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from Group_Fare
+    where fareNo = #{fareno,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="me.k28611.pintuan.model.po.GroupFare">
+    insert into Group_Fare (fareNo, groupNo, groupMember, 
+      topicID)
+    values (#{fareno,jdbcType=INTEGER}, #{groupno,jdbcType=INTEGER}, #{groupmember,jdbcType=INTEGER}, 
+      #{topicid,jdbcType=INTEGER})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="me.k28611.pintuan.model.po.GroupFare">
+    update Group_Fare
+    set groupNo = #{groupno,jdbcType=INTEGER},
+      groupMember = #{groupmember,jdbcType=INTEGER},
+      topicID = #{topicid,jdbcType=INTEGER}
+    where fareNo = #{fareno,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select fareNo, groupNo, groupMember, topicID
+    from Group_Fare
+    where fareNo = #{fareno,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select fareNo, groupNo, groupMember, topicID
+    from Group_Fare
+  </select>
+  <select id="selectByTopicIdAndGroupNo" resultMap="BaseResultMap">
+    select fareNo, groupNo, groupMember, topicID
+    from Group_Fare
+    where groupNo = #{groupno,jdbcType=INTEGER} and topicID = #{topicid,jdbcType=INTEGER}
+  </select>
+
+</mapper>

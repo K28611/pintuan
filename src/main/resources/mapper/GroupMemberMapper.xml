@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="me.k28611.pintuan.dao.GroupMemberMapper">
+  <resultMap id="BaseResultMap" type="me.k28611.pintuan.model.po.GroupMember">
+    <id column="pno" jdbcType="INTEGER" property="pno" />
+    <result column="groupNo" jdbcType="INTEGER" property="groupno" />
+    <result column="groupMember" jdbcType="INTEGER" property="groupmember" />
+    <result column="isValid" jdbcType="BIT" property="isvalid" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from Group_Member
+    where pno = #{pno,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="me.k28611.pintuan.model.po.GroupMember">
+    insert into Group_Member (pno, groupNo, groupMember, 
+      isValid)
+    values (#{pno,jdbcType=INTEGER}, #{groupno,jdbcType=INTEGER}, #{groupmember,jdbcType=INTEGER}, 
+      #{isvalid,jdbcType=BIT})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="me.k28611.pintuan.model.po.GroupMember">
+    update Group_Member
+    set groupNo = #{groupno,jdbcType=INTEGER},
+      groupMember = #{groupmember,jdbcType=INTEGER},
+      isValid = #{isvalid,jdbcType=BIT}
+    where pno = #{pno,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select pno, groupNo, groupMember, isValid
+    from Group_Member
+    where pno = #{pno,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select pno, groupNo, groupMember, isValid
+    from Group_Member
+  </select>
+  <select id="selectBygroupNo" resultMap="BaseResultMap">
+    select pno, groupNo, groupMember, isValid
+    from Group_Member
+    where groupNo = #{groupno,jdbcType=INTEGER}
+  </select>
+  <select id="selectByWorkNo" resultMap="BaseResultMap">
+    select pno, groupNo, groupMember, isValid
+    from Group_Member
+    where groupMember = #{groupMember,jdbcType=INTEGER}
+  </select>
+</mapper>
