@@ -15,7 +15,7 @@ public class ActivityMember implements Serializable {
 
     private Boolean oughtmoneystatus;
 
-    private String activitytopic;
+    private String activityname;
 
     private Integer activityno;
 

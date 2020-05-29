@@ -30,7 +30,9 @@ public class ActivityServiceImp implements ActivityService {
         activityMaster.setGroupno(info.getGroupNo());
         activityMaster.setSumaccount(info.getSumAccount());
         activityMasterMapper.insert(activityMaster);
-
+        for (ActivityMember activityMember:info.getActivityMembers()){
+            activityMemberMapper.insert(activityMember);
+        }
     }
 
     @Override
@@ -46,6 +48,24 @@ public class ActivityServiceImp implements ActivityService {
     @Override
     public List<ActivityMember> getActivityMemberByMemberNo(int memberNo) {
         return activityMemberMapper.selectByMemberNo(memberNo);
+    }
+
+    @Override
+    public List<ActivityMaster> findActivityByGroupName(int memberNo) {
+        return activityMasterMapper.selectByGroupNo(memberNo);
+    }
+
+    @Override
+    public ActivityInfo findActivityInfoByActivityNo(int activityNo) {
+        ActivityMaster activityMaster = activityMasterMapper.selectByPrimaryKey(activityNo);
+        List<ActivityMember> activityMembers = activityMemberMapper.selectByActivityNo(activityNo);
+        ActivityInfo activityInfo = new ActivityInfo();
+        activityInfo.setActivityMembers(activityMembers);
+        activityInfo.setActivityEndTime(activityMaster.getActivityendtime());
+        activityInfo.setActivityStartTime(activityMaster.getActivitystarttime());
+        activityInfo.setGroupNo(activityMaster.getGroupno());
+        activityInfo.setSumAccount(activityMaster.getSumaccount());
+        return activityInfo;
     }
 
 }

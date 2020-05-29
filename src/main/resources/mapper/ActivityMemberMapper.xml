@@ -6,7 +6,7 @@
     <result column="activirtyMemberNo" jdbcType="INTEGER" property="activirtymemberno" />
     <result column="oughtMoney" jdbcType="DECIMAL" property="oughtmoney" />
     <result column="oughtMoneyStatus" jdbcType="BIT" property="oughtmoneystatus" />
-    <result column="activityTopic" jdbcType="VARCHAR" property="activitytopic" />
+    <result column="activityName" jdbcType="VARCHAR" property="activityname" />
     <result column="activityNo" jdbcType="INTEGER" property="activityno" />
     <result column="addFare" jdbcType="DECIMAL" property="addfare" />
     <result column="addFareStatus" jdbcType="BIT" property="addfarestatus" />
@@ -18,10 +18,10 @@
   </delete>
   <insert id="insert" parameterType="me.k28611.pintuan.model.po.ActivityMember">
     insert into Activity_Member (pno, activirtyMemberNo, oughtMoney, 
-      oughtMoneyStatus, activityTopic, activityNo, addFare, addFareStatus ,addFareTopic
+      oughtMoneyStatus, activityName, activityNo, addFare, addFareStatus ,addFareTopic
       )
     values (#{pno,jdbcType=INTEGER}, #{activirtymemberno,jdbcType=INTEGER}, #{oughtmoney,jdbcType=DECIMAL}, 
-      #{oughtmoneystatus,jdbcType=BIT}, #{activitytopic,jdbcType=VARCHAR}, #{addfare,jdbcType=DECIMAL},
+      #{oughtmoneystatus,jdbcType=BIT}, #{activityname,jdbcType=VARCHAR}, #{addfare,jdbcType=DECIMAL},
       #{addfarestatus,jdbcType=BIT}, #{addfaretopic,jdbcType=VARCHAR}
       )
   </insert>
@@ -30,7 +30,7 @@
     set activirtyMemberNo = #{activirtymemberno,jdbcType=INTEGER},
       oughtMoney = #{oughtmoney,jdbcType=DECIMAL},
       oughtMoneyStatus = #{oughtmoneystatus,jdbcType=BIT},
-      activityTopic = #{activitytopic,jdbcType=VARCHAR},
+      activityName = #{activityname,jdbcType=VARCHAR},
       activityNo = #{activityno,jdbcType=INTEGER}
       addFare = #{addfare,jdbcType=DECIMAL},
       addFareStatus = #{addfarestatus,jdbcType=BIT},
@@ -38,24 +38,24 @@
     where pno = #{pno,jdbcType=INTEGER}
   </update>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select pno, activirtyMemberNo, oughtMoney, oughtMoneyStatus, activityTopic, activityNo,
+    select pno, activirtyMemberNo, oughtMoney, oughtMoneyStatus, activityName, activityNo,
     addFare , addFareStatus ,addFareTopic
     from Activity_Member
     where pno = #{pno,jdbcType=INTEGER}
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
-    select pno, activirtyMemberNo, oughtMoney, oughtMoneyStatus, activityTopic, activityNo,
+    select pno, activirtyMemberNo, oughtMoney, oughtMoneyStatus, activityName, activityNo,
     addFare , addFareStatus ,addFareTopic
     from Activity_Member
   </select>
   <select id="selectByActivityNo" resultMap="BaseResultMap">
-    select pno, activirtyMemberNo, oughtMoney, oughtMoneyStatus, activityTopic, activityNo,
+    select pno, activirtyMemberNo, oughtMoney, oughtMoneyStatus, activityName, activityNo,
     addFare , addFareStatus ,addFareTopic
     from Activity_Member
     where activityNo = #{activityno,jdbcType=INTEGER}
   </select>
   <select id="selectByMemberNo" resultMap="BaseResultMap">
-    select pno, activirtyMemberNo, oughtMoney, oughtMoneyStatus, activityTopic, activityNo,
+    select pno, activirtyMemberNo, oughtMoney, oughtMoneyStatus, activityName, activityNo,
     addFare , addFareStatus ,addFareTopic
     from Activity_Member
     where activirtyMemberNo = #{memberno,jdbcType=INTEGER}

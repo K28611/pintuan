@@ -38,4 +38,10 @@
     select activityNo, activityStartTime, groupNo, sumAccount, activityEndTime, activityName
     from Activity_Master
   </select>
+  <select id="selectByGroupNo" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select activityNo, activityStartTime, groupNo, sumAccount, activityEndTime, activityName
+    from Activity_Master
+    where groupNo    = #{groupno,jdbcType=INTEGER}
+  </select>
+
 </mapper>

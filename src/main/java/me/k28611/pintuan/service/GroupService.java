@@ -38,4 +38,6 @@ public interface GroupService {
     public  GroupFare findNotestByTopicIdAndGroupNo(Integer groupNo,Integer topicId);
 
     public void PayGroupFare(GroupFare fare);
+
+
 }

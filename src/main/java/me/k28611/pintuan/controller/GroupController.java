@@ -33,6 +33,12 @@ public class GroupController {
        //groupService.c(workNo);
         return null;
     }
+    /**
+     * @Description:创建团队
+     * @param param
+     * @return me.k28611.pintuan.utils.JsonResult
+     **/
+
     @GetMapping("/createGroup")
     public JsonResult createGroup(@RequestBody Map<String, String> param){
         int workNo = Integer.parseInt(param.get("workNo"));
@@ -40,6 +46,12 @@ public class GroupController {
         groupService.createGroup(groupName,workNo);
         return new JsonResult(ResultCode.SUCCESS,null);
     }
+
+    /**
+     * @Description:加入团队
+     * @param param
+     * @return me.k28611.pintuan.utils.JsonResult
+     **/
 
     @GetMapping("/joinGroup")
     public JsonResult joinGroup(@RequestBody Map<String, String> param){
@@ -53,6 +65,12 @@ public class GroupController {
         }
         return new JsonResult(ResultCode.RESULT_DATA_NONE,null);
     }
+
+    /**
+     * @Description:获取团信息
+     * @param param
+     * @return me.k28611.pintuan.utils.JsonResult
+     **/
 
     @GetMapping("/getGroupInfo")
     public JsonResult getGroupInfo(@RequestBody Map<String, String> param ){

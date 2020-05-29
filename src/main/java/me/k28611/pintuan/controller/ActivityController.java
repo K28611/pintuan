@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -26,6 +27,12 @@ import java.util.Map;
 public class ActivityController {
     @Autowired
     ActivityService activityService;
+
+    /**
+     * @Description:创建活动
+     * @param param
+     * @return me.k28611.pintuan.utils.JsonResult
+     **/
     @RequestMapping("/createActivity")
     public JsonResult createActivity(@RequestBody ActivityInfo param){
         activityService.createActivity(param);
@@ -34,6 +41,20 @@ public class ActivityController {
         }
         return new JsonResult(ResultCode.SUCCESS,null);
     }
+
+    /**
+     * @Description:获取活动信息
+     * @param param
+     * @return me.k28611.pintuan.utils.JsonResult
+     **/
+
+    @RequestMapping("/getActivityInfo")
+    public JsonResult getActivityInfo(@RequestBody Map<String, String> param){
+        int activityNo = Integer.parseInt(param.get("activityNo"));
+        ActivityInfo activityInfo = activityService.findActivityInfoByActivityNo(activityNo);
+        return new JsonResult(ResultCode.SUCCESS,activityInfo);
+    }
+
 
 
 }

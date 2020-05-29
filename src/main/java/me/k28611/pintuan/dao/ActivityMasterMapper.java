@@ -15,4 +15,8 @@ public interface ActivityMasterMapper {
     List<ActivityMaster> selectAll();
 
     int updateByPrimaryKey(ActivityMaster record);
+
+    List<ActivityMaster> selectByGroupNo(Integer groupno);
+
+
 }

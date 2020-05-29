@@ -19,7 +19,5 @@ public class ActivityMaster implements Serializable {
 
     private String activityName;
 
-    private static final long serialVersionUID = 1L;
-
 
 }

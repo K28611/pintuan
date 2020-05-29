@@ -1,15 +1,12 @@
 package me.k28611.pintuan.controller;
 
-import com.alibaba.fastjson.JSONObject;
-import com.sun.org.apache.xpath.internal.functions.FuncLang;
 import me.k28611.pintuan.annotation.JwtIgnore;
 import me.k28611.pintuan.dao.GroupFareMapper;
 import me.k28611.pintuan.entity.Audience;
 import me.k28611.pintuan.enums.ResultCode;
-import me.k28611.pintuan.model.po.GroupFare;
-import me.k28611.pintuan.model.po.GroupFareDetail;
-import me.k28611.pintuan.model.po.GroupMember;
-import me.k28611.pintuan.model.po.HrMember;
+import me.k28611.pintuan.model.po.*;
+import me.k28611.pintuan.model.vo.AddUnpay;
+import me.k28611.pintuan.model.vo.OughtUnpay;
 import me.k28611.pintuan.model.vo.UnpayBean;
 import me.k28611.pintuan.service.ActivityService;
 import me.k28611.pintuan.service.FileService;
@@ -18,9 +15,6 @@ import me.k28611.pintuan.service.UserService;
 import me.k28611.pintuan.utils.JsonResult;
 import me.k28611.pintuan.utils.JwtTokenUtils;
 
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.jdbc.Null;
-import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +22,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import javax.servlet.http.HttpServletRequest;
-import java.io.*;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -99,6 +89,12 @@ public class UserController {
         }
     }
 
+    /**
+     * @Description:注册接口
+     * @param userName passWord
+     * @return me.k28611.pintuan.utils.JsonResult
+     **/
+
     @JwtIgnore
     @GetMapping("/register")
     public JsonResult register(@RequestBody Map<String, String> param) {
@@ -116,11 +112,16 @@ public class UserController {
         return new JsonResult(ResultCode.SUCCESS,null);
     }
 
+    /**
+     * @Description:获取未支付的团信息
+     * @param param
+     * @return me.k28611.pintuan.utils.JsonResult
+     **/
+
     @RequestMapping("/getGroupUnpaid")
     public JsonResult getGroupUnpaid(@RequestBody Map<String, String> param){
         int workNo = Integer.parseInt(param.get("workNo"));
         List <GroupMember> group = groupService.selectGroupByWorkNo(workNo);//查找用户加入的团
-        //System.out.println(group);
         if(group.size()==0){
             return new JsonResult(ResultCode.RESULT_DATA_NONE,null);
         }
@@ -145,14 +146,60 @@ public class UserController {
         return new JsonResult(ResultCode.SUCCESS,unpaid);
     }
 
+    /**
+     * @Description:交活动费
+     * @param
+     * @return me.k28611.pintuan.utils.JsonResult
+     **/
+
     @RequestMapping("/payActivityFare")
     public JsonResult pay(){
+
         return null;
     }
+
+    /**
+     * @Description:交团费
+     * @param param
+     * @return me.k28611.pintuan.utils.JsonResult
+     **/
 
     @RequestMapping("/payGroupFare")
     public JsonResult payGroupFare(@RequestBody Map<String, String> param){
         return null;
+    }
+
+    /**
+     * @Description:获取未支付的活动信息
+     * @param param
+     * @return me.k28611.pintuan.utils.JsonResult
+     **/
+    @RequestMapping("/getActivityUnpaid")
+    public JsonResult getActivityUnpaid(@RequestBody Map<String, String> param){
+        int workNo = Integer.parseInt(param.get("workNo"));
+        Map<OughtUnpay,BigDecimal> oughtMoneyUnPayMap = new HashMap<>();
+        Map<AddUnpay,BigDecimal> addMoneyUnPayMap = new HashMap<>();
+        List<ActivityMember> activityMemberByMemberNo = activityService.getActivityMemberByMemberNo(workNo);
+        if (activityMemberByMemberNo.size()==0)
+            return new JsonResult(ResultCode.RESULT_DATA_NONE,null);
+        for (int i = 0; i < activityMemberByMemberNo.size(); i++) {
+            Boolean oughtmoneystatus = activityMemberByMemberNo.get(i).getOughtmoneystatus();
+            Boolean addfarestatus = activityMemberByMemberNo.get(i).getAddfarestatus();
+            if(!oughtmoneystatus){
+                OughtUnpay oughtUnpay = new OughtUnpay();
+                oughtUnpay.setActivityNo(activityMemberByMemberNo.get(i).getActivityno());
+                oughtUnpay.setActivityName(activityMemberByMemberNo.get(i).getActivityname());
+                oughtMoneyUnPayMap.put(oughtUnpay,activityMemberByMemberNo.get(i).getOughtmoney());
+            }
+            if (!addfarestatus){
+                AddUnpay addUnpay = new AddUnpay();
+                addUnpay.setActivityName(activityMemberByMemberNo.get(i).getActivityname());
+                addUnpay.setActivityNo(activityMemberByMemberNo.get(i).getActivityno());
+                addUnpay.setAddFareTopic(activityMemberByMemberNo.get(i).getAddfaretopic());
+                addMoneyUnPayMap.put(addUnpay,activityMemberByMemberNo.get(i).getAddfare());
+            }
+        }
+        return  new JsonResult(ResultCode.SUCCESS,oughtMoneyUnPayMap,addMoneyUnPayMap);
     }
 
 
