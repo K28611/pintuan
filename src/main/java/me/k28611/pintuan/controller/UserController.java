@@ -52,7 +52,7 @@ public class UserController {
      * @return me.k28611.manage.utils.JsonResult
      **/
 
-    @GetMapping("/login")
+    @RequestMapping("/login")
     @ResponseBody
     public JsonResult login(@RequestBody Map<String, String> param) {
 
@@ -70,8 +70,7 @@ public class UserController {
                     System.out.println(bCryptPasswordEncoder.matches(passWord,user.getPassword()));
                     if (bCryptPasswordEncoder.matches(passWord, user.getPassword())) {
                         System.out.println(passWord);
-                        final String token = JwtTokenUtils.generateToken(user, audience);
-                        return new JsonResult(ResultCode.SUCCESS, token);
+                        return new JsonResult(ResultCode.SUCCESS, null);
                     } else {
                         return new JsonResult(ResultCode.USER_LOGIN_ERROR, null);
                     }
@@ -90,7 +89,7 @@ public class UserController {
      * @return me.k28611.pintuan.utils.JsonResult
      **/
 
-    @GetMapping("/register")
+    @RequestMapping("/register")
     public JsonResult register(@RequestBody Map<String, String> param) {
         String userName = param.get("userName");
         HrMember hrMember = userService.selectByUserName(userName);
