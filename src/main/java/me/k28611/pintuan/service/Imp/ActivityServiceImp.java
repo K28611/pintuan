@@ -68,4 +68,14 @@ public class ActivityServiceImp implements ActivityService {
         return activityInfo;
     }
 
+    @Override
+    public void payActivityFare(ActivityMember activityMember) {
+        activityMemberMapper.updateByActivityNoAndActivityMemberNo(activityMember);
+    }
+
+    @Override
+    public ActivityMember selectByActivityNoAndActivityMemberNo(Integer memberno, Integer activityno) {
+        return activityMemberMapper.selectByActivityNoAndActivityMemberNo(memberno,activityno);
+    }
+
 }

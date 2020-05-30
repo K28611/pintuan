@@ -17,6 +17,5 @@ public interface GroupFareMapper {
 
     int updateByPrimaryKey(GroupFare record);
 
-    GroupFare selectByTopicIdAndGroupNo(Integer groupno,Integer topicid);
-
+    GroupFare selectByTopicIdAndGroupNo(Integer groupno,Integer topicid,Integer groupmember);
 }

@@ -61,4 +61,23 @@
     where activirtyMemberNo = #{memberno,jdbcType=INTEGER}
   </select>
 
+  <select id="selectByActivityNoAndActivityMemberNo" resultMap="BaseResultMap">
+    select pno, activirtyMemberNo, oughtMoney, oughtMoneyStatus, activityName, activityNo,
+    addFare , addFareStatus ,addFareTopic
+    from Activity_Member
+    where activirtyMemberNo = #{memberno,jdbcType=INTEGER} and activityNo = #{activityno,jdbcType=INTEGER}
+  </select>
+
+  <update id="updateByActivityNoAndActivityMemberNo" parameterType="me.k28611.pintuan.model.po.ActivityMember">
+    update Activity_Member
+    set activirtyMemberNo = #{activirtymemberno,jdbcType=INTEGER},
+      oughtMoney = #{oughtmoney,jdbcType=DECIMAL},
+      oughtMoneyStatus = #{oughtmoneystatus,jdbcType=BIT},
+      activityName = #{activityname,jdbcType=VARCHAR},
+      activityNo = #{activityno,jdbcType=INTEGER}
+      addFare = #{addfare,jdbcType=DECIMAL},
+      addFareStatus = #{addfarestatus,jdbcType=BIT},
+      addFareTopic = #{addfaretopic,jdbcType=VARCHAR}
+    where activityNo = #{activityno,jdbcType=INTEGER} and activirtyMemberNo = #{activirtymemberno,jdbcType=INTEGER}
+  </update>
 </mapper>

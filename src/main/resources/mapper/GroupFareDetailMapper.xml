@@ -39,5 +39,10 @@
     select topicID, topicName, groupNo, money
     from Group_Fare_Detail
   </select>
+  <select id="selectByGroupNoAndTopicId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select topicID, topicName, groupNo, money
+    from Group_Fare_Detail
+    where groupNo = #{groupNo,jdbcType=INTEGER} and topicID = #{topicid,jdbcType=INTEGER}
+  </select>
 
 </mapper>

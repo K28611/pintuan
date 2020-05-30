@@ -17,4 +17,6 @@ public interface GroupFareDetailMapper {
     int updateByPrimaryKey(GroupFareDetail record);
 
     List<GroupFareDetail> selectByGroupNo(Integer groupNo);
+
+    GroupFareDetail selectByGroupNoAndTopicId(Integer groupNo,Integer topicid);
 }

@@ -26,4 +26,8 @@ public interface ActivityService {
 
     //查询活动信息
     public ActivityInfo findActivityInfoByActivityNo(int activityNo);
+
+    public void payActivityFare(ActivityMember activityMember);
+
+    public ActivityMember selectByActivityNoAndActivityMemberNo(Integer memberno,Integer activityno);
 }

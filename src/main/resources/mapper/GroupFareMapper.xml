@@ -36,7 +36,7 @@
   <select id="selectByTopicIdAndGroupNo" resultMap="BaseResultMap">
     select fareNo, groupNo, groupMember, topicID
     from Group_Fare
-    where groupNo = #{groupno,jdbcType=INTEGER} and topicID = #{topicid,jdbcType=INTEGER}
+    where groupNo = #{groupno,jdbcType=INTEGER} and topicID = #{topicid,jdbcType=INTEGER} and groupmember = #{groupmember,jdbcType=INTEGER}
   </select>
 
 </mapper>

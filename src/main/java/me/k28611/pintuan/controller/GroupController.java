@@ -1,9 +1,9 @@
 package me.k28611.pintuan.controller;
 
 import me.k28611.pintuan.enums.ResultCode;
-import me.k28611.pintuan.model.po.GroupMaster;
-import me.k28611.pintuan.model.po.HrMember;
+import me.k28611.pintuan.model.po.*;
 import me.k28611.pintuan.model.vo.GroupInfo;
+import me.k28611.pintuan.model.vo.UnpayGroupBean;
 import me.k28611.pintuan.model.vo.User;
 import me.k28611.pintuan.service.GroupService;
 import me.k28611.pintuan.service.UserService;
@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,11 +30,6 @@ public class GroupController {
     GroupService groupService;
     @Autowired
     UserService userService;
-    @GetMapping("/getMyGroup")
-    public JsonResult getMyGroup(int workNo){
-       //groupService.c(workNo);
-        return null;
-    }
     /**
      * @Description:创建团队
      * @param param
@@ -78,6 +75,34 @@ public class GroupController {
         GroupInfo groupInfo = groupService.getGroupInfo(groupNo);
         List<User> members = groupService.getMembers(groupNo);
         return new JsonResult(ResultCode.SUCCESS,groupInfo,members);
+    }
+
+    /**
+     * @Description:获取未支付的团员信息
+     * @param null
+     * @return
+     **/
+    @GetMapping("/getUnpayGroupMemberInfo")
+    public JsonResult getUnpayGroupMemberInfo(@RequestBody Map<String, String> param){
+        int groupNo = Integer.parseInt(param.get("groupNo"));
+        List<GroupFareDetail> fareTopicIdByGroupNo = groupService.findFareTopicIdByGroupNo(groupNo); //查诈骗团收费项
+        List<User> memberByGroupNo = groupService.getMembers(groupNo);
+        Map<UnpayGroupBean, BigDecimal> unPayMap = new HashMap();
+            for (int i = 0; i < fareTopicIdByGroupNo.size() ; i++) {
+                for (int j = 0; j < memberByGroupNo.size() ; j++) {
+                GroupFare notestByTopicIdAndGroupNo = groupService.findNotestByTopicIdAndGroupNo(groupNo,
+                        fareTopicIdByGroupNo.get(i).getTopicid(),
+                        memberByGroupNo.get(j).getWorkno());
+                if (notestByTopicIdAndGroupNo == null){
+                    UnpayGroupBean unpayGroupBen = new UnpayGroupBean(memberByGroupNo.get(j).getWorkno(),
+                            memberByGroupNo.get(j).getUsername(),
+                            fareTopicIdByGroupNo.get(i).getTopicid(),
+                            fareTopicIdByGroupNo.get(i).getTopicname());
+                    unPayMap.put(unpayGroupBen,fareTopicIdByGroupNo.get(i).getMoney());
+                }
+            }
+        }
+        return new JsonResult(ResultCode.SUCCESS,unPayMap);
     }
 
 }

@@ -53,12 +53,8 @@ public class GroupServiceImp implements GroupService {
     }
 
     @Override
-    public void payGroupFare(int groupNo, HrMember hrMember, GroupFareDetail detail) {
-        GroupFare groupFare = new GroupFare();
-        groupFare.setTopicid(detail.getTopicid());
-        groupFare.setGroupno(groupNo);
-        groupFare.setGroupmember(hrMember.getWorkno());
-        groupFareMapper.insert(groupFare);
+    public void payGroupFare(GroupFare fare) {
+        groupFareMapper.insert(fare);
     }
 
     @Override
@@ -109,14 +105,21 @@ public class GroupServiceImp implements GroupService {
     }
 
     @Override
-    public GroupFare findNotestByTopicIdAndGroupNo(Integer groupNo,Integer topicId) {
-        return  groupFareMapper.selectByTopicIdAndGroupNo(groupNo,topicId);
+    public GroupFare findNotestByTopicIdAndGroupNo(Integer groupNo,Integer topicId,Integer workNo) {
+        return  groupFareMapper.selectByTopicIdAndGroupNo(groupNo,topicId,workNo);
     }
 
     @Override
     public void PayGroupFare(GroupFare fare) {
         groupFareMapper.insert(fare);
     }
+
+    @Override
+    public List<GroupMember> findMemberByGroupNo(int groupNo) {
+        return   groupMemberMapper.selectBygroupNo(groupNo);
+    }
+
+
 
     @Override
     public void ExitGroup() {

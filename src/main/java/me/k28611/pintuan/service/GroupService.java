@@ -17,7 +17,7 @@ public interface GroupService {
     //加入小组
     public void addMember(int groupNo,HrMember[] hrMembers);
 
-    public void payGroupFare(int groupNo, HrMember hrMember, GroupFareDetail detail);
+    public void payGroupFare(GroupFare fare);
 
     public List<User> getMembers(int groupNo);
 
@@ -35,9 +35,11 @@ public interface GroupService {
 
     public  List<GroupFareDetail> findFareTopicIdByGroupNo(Integer groupNo);
 
-    public  GroupFare findNotestByTopicIdAndGroupNo(Integer groupNo,Integer topicId);
+    public  GroupFare findNotestByTopicIdAndGroupNo(Integer groupNo,Integer topicId,Integer workNo);
 
     public void PayGroupFare(GroupFare fare);
+
+    public  List<GroupMember> findMemberByGroupNo(int groupNo);
 
 
 }

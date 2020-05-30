@@ -1,7 +1,5 @@
 package me.k28611.pintuan.controller;
 
-import me.k28611.pintuan.annotation.JwtIgnore;
-import me.k28611.pintuan.dao.GroupFareMapper;
 import me.k28611.pintuan.entity.Audience;
 import me.k28611.pintuan.enums.ResultCode;
 import me.k28611.pintuan.model.po.*;
@@ -9,7 +7,6 @@ import me.k28611.pintuan.model.vo.AddUnpay;
 import me.k28611.pintuan.model.vo.OughtUnpay;
 import me.k28611.pintuan.model.vo.UnpayBean;
 import me.k28611.pintuan.service.ActivityService;
-import me.k28611.pintuan.service.FileService;
 import me.k28611.pintuan.service.GroupService;
 import me.k28611.pintuan.service.UserService;
 import me.k28611.pintuan.utils.JsonResult;
@@ -37,13 +34,10 @@ public class UserController {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired
-    FileService fileService;
-    @Autowired
     ActivityService activityService;
     @Autowired
     GroupService groupService;
-    @Autowired
-    GroupFareMapper groupFareMapper;
+
     @Bean
     public BCryptPasswordEncoder encoder() {
         return new BCryptPasswordEncoder();
@@ -60,7 +54,6 @@ public class UserController {
 
     @GetMapping("/login")
     @ResponseBody
-    @JwtIgnore
     public JsonResult login(@RequestBody Map<String, String> param) {
 
 
@@ -85,7 +78,9 @@ public class UserController {
                 }
             }
         } catch (Exception e) {
-            return new JsonResult(e.getMessage());
+            logger.error(e.getMessage());
+            return new JsonResult(ResultCode.DATA_IS_WRONG,null);
+
         }
     }
 
@@ -95,7 +90,6 @@ public class UserController {
      * @return me.k28611.pintuan.utils.JsonResult
      **/
 
-    @JwtIgnore
     @GetMapping("/register")
     public JsonResult register(@RequestBody Map<String, String> param) {
         String userName = param.get("userName");
@@ -113,14 +107,14 @@ public class UserController {
     }
 
     /**
-     * @Description:获取未支付的团信息
+     * @Description:查询个人获取未支付的团信息
      * @param param
      * @return me.k28611.pintuan.utils.JsonResult
      **/
 
     @RequestMapping("/getGroupUnpaid")
-    public JsonResult getGroupUnpaid(@RequestBody Map<String, String> param){
-        int workNo = Integer.parseInt(param.get("workNo"));
+    public JsonResult getGroupUnpaid(){
+        int workNo = 1;
         List <GroupMember> group = groupService.selectGroupByWorkNo(workNo);//查找用户加入的团
         if(group.size()==0){
             return new JsonResult(ResultCode.RESULT_DATA_NONE,null);
@@ -129,16 +123,16 @@ public class UserController {
 
         for (int k = 0; k < group.size();k++){
             List<GroupFareDetail> fareTopicIdByGroupNo = groupService.findFareTopicIdByGroupNo(group.get(k).getGroupno()); //团下面的topic
-            System.out.println(fareTopicIdByGroupNo);
             if (fareTopicIdByGroupNo.size()==0)
                 continue; //下一个团
             for (int j = 0  ;j < fareTopicIdByGroupNo.size();j++){
                 GroupFare notestByTopicIdAndGroupNo = groupService.findNotestByTopicIdAndGroupNo(group.get(k).getGroupno(),
-                        fareTopicIdByGroupNo.get(j).getTopicid());//查找对应的记录
+                        fareTopicIdByGroupNo.get(j).getTopicid(),
+                workNo);//查找对应的记录
                 if (notestByTopicIdAndGroupNo == null){
                     UnpayBean unpayBean = new UnpayBean(fareTopicIdByGroupNo.get(j).getGroupno(),
                             fareTopicIdByGroupNo.get(j).getTopicid(),fareTopicIdByGroupNo.get(j).getTopicname());
-                    unpaid.put(unpayBean,fareTopicIdByGroupNo.get(j).getMoney());
+                        unpaid.put(unpayBean,fareTopicIdByGroupNo.get(j).getMoney());
                 }
             }
         }
@@ -153,9 +147,30 @@ public class UserController {
      **/
 
     @RequestMapping("/payActivityFare")
-    public JsonResult pay(){
+    public JsonResult payActivityFare(@RequestBody Map<String, String> param){
+        int activityNo = Integer.parseInt(param.get("activityNo"));
+        int activirtyMemberNo = Integer.parseInt(param.get("workNo"));
+        ActivityMember activityMember = activityService.selectByActivityNoAndActivityMemberNo(activirtyMemberNo, activityNo);
+        if (activityMember==null)
+            return new JsonResult(ResultCode.RESULT_DATA_NONE,null);
+        activityMember.setOughtmoneystatus(true);
+        return new JsonResult(ResultCode.SUCCESS,null);
+    }
+    /**
+     * @Description:交附加活动费
+     * @param
+     * @return me.k28611.pintuan.utils.JsonResult
+     **/
 
-        return null;
+    @RequestMapping("/payAddActivityFare")
+    public JsonResult payAddActivityFare(@RequestBody Map<String, String> param){
+        int activityNo = Integer.parseInt(param.get("activityNo"));
+        int activirtyMemberNo = Integer.parseInt(param.get("workNo"));
+        ActivityMember activityMember = activityService.selectByActivityNoAndActivityMemberNo(activirtyMemberNo, activityNo);
+        if (activityMember==null)
+            return new JsonResult(ResultCode.RESULT_DATA_NONE,null);
+        activityMember.setAddfarestatus(true);
+        return new JsonResult(ResultCode.SUCCESS,null);
     }
 
     /**
@@ -165,12 +180,13 @@ public class UserController {
      **/
 
     @RequestMapping("/payGroupFare")
-    public JsonResult payGroupFare(@RequestBody Map<String, String> param){
-        return null;
+    public JsonResult payGroupFare(@RequestBody GroupFare param){
+        groupService.payGroupFare(param);
+        return new JsonResult(ResultCode.SUCCESS);
     }
 
     /**
-     * @Description:获取未支付的活动信息
+     * @Description:获取个人未支付的活动信息
      * @param param
      * @return me.k28611.pintuan.utils.JsonResult
      **/

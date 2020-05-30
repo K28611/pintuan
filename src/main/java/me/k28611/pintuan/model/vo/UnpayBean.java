@@ -8,15 +8,15 @@ import lombok.Data;
  */
 @Data
 public class UnpayBean {
-    public UnpayBean(Integer GroupNo,Integer AcitivityNo,String ActivityName){
+    public UnpayBean(Integer GroupNo,Integer TopicId,String TopicName){
         this.groupNo = GroupNo;
-        this.acitivityNo = AcitivityNo;
-        this.activityName = ActivityName;
+        this.topicID = TopicId;
+        this.topicName = TopicName;
     }
     public Integer groupNo;
 
-    public Integer acitivityNo;
+    public Integer topicID;
 
-    public String activityName;
+    public String topicName;
 
 }

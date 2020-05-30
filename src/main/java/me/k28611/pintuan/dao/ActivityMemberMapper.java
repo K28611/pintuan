@@ -20,4 +20,8 @@ public interface ActivityMemberMapper {
 
     List<ActivityMember> selectByMemberNo(Integer memberno);
 
+    int updateByActivityNoAndActivityMemberNo(ActivityMember record);
+
+    ActivityMember selectByActivityNoAndActivityMemberNo(Integer memberno,Integer activityno);
+
 }
