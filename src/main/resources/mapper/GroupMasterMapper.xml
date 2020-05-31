@@ -46,4 +46,10 @@
     left join HR_Member B on A.groupMaster = B.workNo
     where groupNo = #{groupno,jdbcType=INTEGER}
   </select>
+  <select id="getMyGroup" resultMap="BaseResultMap2">
+    select A.groupNo, A.groupName, A.groupMaster, A.groupFoundTime,B.username as groupMasterName
+    from Group_Master A
+    left join HR_Member B on A.groupMaster = B.workNo
+    where workNo = #{workNo,jdbcType=INTEGER}
+  </select>
 </mapper>

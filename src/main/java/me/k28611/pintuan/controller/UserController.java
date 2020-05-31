@@ -4,6 +4,7 @@ import me.k28611.pintuan.entity.Audience;
 import me.k28611.pintuan.enums.ResultCode;
 import me.k28611.pintuan.model.po.*;
 import me.k28611.pintuan.model.vo.AddUnpay;
+import me.k28611.pintuan.model.vo.GroupInfo;
 import me.k28611.pintuan.model.vo.OughtUnpay;
 import me.k28611.pintuan.model.vo.UnpayBean;
 import me.k28611.pintuan.service.ActivityService;
@@ -216,6 +217,31 @@ public class UserController {
         }
         return  new JsonResult(ResultCode.SUCCESS,oughtMoneyUnPayMap,addMoneyUnPayMap);
     }
+    /**
+     * @Description:获取我加入的团
+     * @param param
+     * @return me.k28611.pintuan.utils.JsonResult
+     **/
+
+    @RequestMapping("/getMyGroup")
+    public JsonResult getMyGroup(@RequestBody Map<String, String> param){
+        int workNo = Integer.parseInt(param.get("workNo"));
+        List<GroupInfo> myGroup = userService.getMyGroup(workNo);
+        return new JsonResult(ResultCode.SUCCESS,myGroup);
+    }
+
+    /**
+     * @Description:获取我加入的活动
+     * @param param
+     * @return me.k28611.pintuan.utils.JsonResult
+     **/
+    @RequestMapping("/getMyActivity")
+    public JsonResult getMyActivity(@RequestBody Map<String, String> param){
+        int workNo = Integer.parseInt(param.get("workNo"));
+        List<ActivityMember> activityMemberByMemberNo = activityService.getActivityMemberByMemberNo(workNo);
+        return new JsonResult(ResultCode.SUCCESS,activityMemberByMemberNo);
+    }
+
 
 
 

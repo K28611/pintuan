@@ -18,4 +18,6 @@ public interface GroupMasterMapper {
     int updateByPrimaryKey(GroupMaster record);
 
     GroupInfo getGroupInfo (Integer groupno);
+
+    List<GroupInfo>  getMyGroup(Integer workNo);
 }

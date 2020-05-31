@@ -1,6 +1,7 @@
 package me.k28611.pintuan.service;
 
 import me.k28611.pintuan.model.po.HrMember;
+import me.k28611.pintuan.model.vo.GroupInfo;
 
 import java.util.List;
 
@@ -20,4 +21,6 @@ public interface UserService {
     public HrMember selectByUserName(String username);
 
     public int updateByPrimaryKey(HrMember user);
+
+    public  List<GroupInfo>  getMyGroup(Integer workNo);
 }

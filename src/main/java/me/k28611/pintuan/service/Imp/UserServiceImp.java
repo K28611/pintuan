@@ -1,7 +1,9 @@
 package me.k28611.pintuan.service.Imp;
 
+import me.k28611.pintuan.dao.GroupMasterMapper;
 import me.k28611.pintuan.dao.HrMemberMapper;
 import me.k28611.pintuan.model.po.HrMember;
+import me.k28611.pintuan.model.vo.GroupInfo;
 import me.k28611.pintuan.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +13,8 @@ import java.util.List;
 public class UserServiceImp implements UserService {
     @Autowired
     HrMemberMapper userMapper;
+    @Autowired
+    GroupMasterMapper groupMasterMapper;
     @Override
     public List<HrMember> findAll() {
         return userMapper.selectAll();
@@ -52,6 +56,11 @@ public class UserServiceImp implements UserService {
             e.printStackTrace();
        }
         return -1;
+    }
+
+    @Override
+    public List<GroupInfo> getMyGroup(Integer workNo) {
+        return groupMasterMapper.getMyGroup(workNo);
     }
 
 
